@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" font-family="'Cascadia Code', 'JetBrains Mono', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#1e293b"/>
+    </marker>
+    <marker id="arrPurple" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#5b21b6"/>
+    </marker>
+  </defs>
+  <rect width="1100" height="700" fill="#fffef9"/>
+
+  <text x="550" y="40" text-anchor="middle" font-size="22" font-weight="bold" fill="#1e293b">Packet Enrichment — Graph Walk</text>
+  <text x="550" y="62" text-anchor="middle" font-size="13" fill="#64748b" font-style="italic">starting from the gate-approved primary node, the enricher gathers related nodes for a richer answer</text>
+
+  <!-- Primary node (center) -->
+  <g>
+    <circle cx="550" cy="320" r="60" fill="#dcfce7" stroke="#15803d" stroke-width="3"/>
+    <text x="550" y="316" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">PRIMARY</text>
+    <text x="550" y="334" text-anchor="middle" font-size="11" fill="#1e293b">ev_18</text>
+  </g>
+
+  <!-- Parent / section -->
+  <g>
+    <rect x="430" y="140" width="240" height="80" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="2.5"/>
+    <text x="550" y="170" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">parent procedure / section</text>
+    <text x="550" y="190" text-anchor="middle" font-size="10" fill="#1e293b">HAS_STEP reverse / PART_OF / PARENT_OF</text>
+    <text x="550" y="206" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">demoted to metadata if bare title</text>
+  </g>
+  <path d="M 550 220 L 550 260" fill="none" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- Sibling steps (left) -->
+  <g>
+    <rect x="60" y="280" width="240" height="80" rx="10" fill="#dbeafe" stroke="#1e40af" stroke-width="2.5"/>
+    <text x="180" y="310" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">sibling steps</text>
+    <text x="180" y="328" text-anchor="middle" font-size="10" fill="#1e293b">HAS_STEP forward from parent</text>
+    <text x="180" y="346" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">up to 3, query-relevance filtered</text>
+  </g>
+  <path d="M 300 320 L 490 320" fill="none" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- Next step (right) -->
+  <g>
+    <rect x="800" y="280" width="240" height="80" rx="10" fill="#dbeafe" stroke="#1e40af" stroke-width="2.5"/>
+    <text x="920" y="310" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">next step</text>
+    <text x="920" y="328" text-anchor="middle" font-size="10" fill="#1e293b">NEXT_STEP forward</text>
+    <text x="920" y="346" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">single hop</text>
+  </g>
+  <path d="M 800 320 L 610 320" fill="none" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- Warnings (bottom-left) -->
+  <g>
+    <rect x="60" y="420" width="240" height="80" rx="10" fill="#fecaca" stroke="#b91c1c" stroke-width="2.5"/>
+    <text x="180" y="450" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">connected warnings</text>
+    <text x="180" y="468" text-anchor="middle" font-size="10" fill="#1e293b">HAS_WARNING forward</text>
+    <text x="180" y="486" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">short, lex-focused rows only</text>
+  </g>
+  <path d="M 300 440 Q 400 440 510 360" fill="none" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- Specs (bottom-right) -->
+  <g>
+    <rect x="800" y="420" width="240" height="80" rx="10" fill="#ede9fe" stroke="#5b21b6" stroke-width="2.5"/>
+    <text x="920" y="450" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b21b6">specs / table rows</text>
+    <text x="920" y="468" text-anchor="middle" font-size="10" fill="#1e293b">HAS_SPEC / HAS_TABLE_ROW</text>
+    <text x="920" y="486" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">structured data</text>
+  </g>
+  <path d="M 800 440 Q 700 440 590 360" fill="none" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- Semantic backfill -->
+  <g>
+    <rect x="340" y="540" width="420" height="120" rx="10" fill="#fdf4ff" stroke="#86198f" stroke-width="2.5" stroke-dasharray="6 4"/>
+    <text x="550" y="568" text-anchor="middle" font-size="13" font-weight="bold" fill="#86198f">semantic backfill</text>
+    <text x="550" y="592" text-anchor="middle" font-size="11" fill="#1e293b">activates only when primary is a thin section-label node</text>
+    <text x="550" y="612" text-anchor="middle" font-size="11" fill="#1e293b">cosine-scans the entire product graph for query-relevant nodes</text>
+    <text x="550" y="632" text-anchor="middle" font-size="11" fill="#1e293b">skipped if primary is already a complete imperative</text>
+    <text x="550" y="652" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">turns "steam cleaning the cavity" into a 4-step procedure</text>
+  </g>
+  <path d="M 530 540 Q 510 420 510 380" fill="none" stroke="#86198f" stroke-width="2.5" stroke-dasharray="4 3" marker-end="url(#arrPurple)"/>
+
+  <!-- Side annotation: filters -->
+  <g transform="translate(40, 80)">
+    <rect x="0" y="0" width="280" height="180" rx="10" fill="#f0f9ff" stroke="#0369a1" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="140" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#0369a1">candidate filters</text>
+    <text x="20" y="55" font-size="11" fill="#1e293b">✓ product binding (same product)</text>
+    <text x="20" y="78" font-size="11" fill="#1e293b">✓ safety-lex non-spillover</text>
+    <text x="20" y="101" font-size="11" fill="#1e293b">✓ entity consistency</text>
+    <text x="20" y="124" font-size="11" fill="#1e293b">✓ query-relevance cosine ≥ 0.10</text>
+    <text x="20" y="147" font-size="11" fill="#1e293b">✓ no bare section titles</text>
+    <text x="20" y="170" font-size="11" fill="#1e293b">✓ packet cap: 5 nodes</text>
+  </g>
+
+  <!-- Side annotation: result -->
+  <g transform="translate(780, 80)">
+    <rect x="0" y="0" width="280" height="180" rx="10" fill="#fef9c3" stroke="#a16207" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="140" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#a16207">resulting packet</text>
+    <text x="20" y="55" font-size="11" fill="#1e293b">selected_evidence_node_ids:</text>
+    <text x="40" y="78" font-size="11" font-family="monospace" fill="#15803d">[18, 47, 85, 116]</text>
+    <text x="20" y="105" font-size="11" fill="#1e293b">evidence_packet_hash:</text>
+    <text x="40" y="128" font-size="11" font-family="monospace" fill="#1e40af">8301123a687a7a0e</text>
+    <text x="20" y="155" font-size="10" fill="#64748b" font-style="italic">hash is stable across runs;</text>
+    <text x="20" y="170" font-size="10" fill="#64748b" font-style="italic">reproducibility holds</text>
+  </g>
+</svg>

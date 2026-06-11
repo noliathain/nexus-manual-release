@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="'Cascadia Code', 'JetBrains Mono', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#1e293b"/>
+    </marker>
+    <marker id="arrRed" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#b91c1c"/>
+    </marker>
+    <marker id="arrGreen" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#15803d"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="620" fill="#fffef9"/>
+
+  <text x="500" y="40" text-anchor="middle" font-size="22" font-weight="bold" fill="#1e293b">Citation Validator</text>
+  <text x="500" y="62" text-anchor="middle" font-size="13" fill="#64748b" font-style="italic">three rules; if any fail, fall back to the deterministic renderer instead of publishing</text>
+
+  <!-- Input: candidate answer + packet -->
+  <g>
+    <rect x="40" y="100" width="280" height="120" rx="10" fill="#ede9fe" stroke="#5b21b6" stroke-width="2"/>
+    <text x="180" y="125" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b21b6">candidate answer</text>
+    <text x="180" y="148" text-anchor="middle" font-size="10" font-family="monospace" fill="#1e293b">"Open the drawer [ev_67]."</text>
+    <text x="180" y="166" text-anchor="middle" font-size="10" font-family="monospace" fill="#1e293b">"Add detergent [ev_67]."</text>
+    <text x="180" y="184" text-anchor="middle" font-size="10" font-family="monospace" fill="#1e293b">"Sort laundry [ev_63]."</text>
+    <text x="180" y="208" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">from the local decoder</text>
+  </g>
+
+  <g>
+    <rect x="40" y="240" width="280" height="100" rx="10" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+    <text x="180" y="265" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">approved packet</text>
+    <text x="180" y="290" text-anchor="middle" font-size="11" font-family="monospace" fill="#1e293b">{67, 63, 65}</text>
+    <text x="180" y="312" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">from packet enricher</text>
+  </g>
+
+  <!-- Three checks (stacked) -->
+  <g>
+    <rect x="400" y="100" width="320" height="80" rx="10" fill="#fecaca" stroke="#b91c1c" stroke-width="2"/>
+    <text x="560" y="125" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">Rule 1 — citation subset</text>
+    <text x="560" y="148" text-anchor="middle" font-size="10" fill="#1e293b">every [ev_N] in the answer must</text>
+    <text x="560" y="166" text-anchor="middle" font-size="10" fill="#1e293b">resolve to a node ID in the packet</text>
+  </g>
+
+  <g>
+    <rect x="400" y="210" width="320" height="80" rx="10" fill="#fecaca" stroke="#b91c1c" stroke-width="2"/>
+    <text x="560" y="235" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">Rule 2 — per-sentence citation</text>
+    <text x="560" y="258" text-anchor="middle" font-size="10" fill="#1e293b">every sentence over 30 characters</text>
+    <text x="560" y="276" text-anchor="middle" font-size="10" fill="#1e293b">must carry at least one citation</text>
+  </g>
+
+  <g>
+    <rect x="400" y="320" width="320" height="80" rx="10" fill="#fecaca" stroke="#b91c1c" stroke-width="2"/>
+    <text x="560" y="345" text-anchor="middle" font-size="13" font-weight="bold" fill="#b91c1c">Rule 3 — wrong-product term</text>
+    <text x="560" y="368" text-anchor="middle" font-size="10" fill="#1e293b">no registered wrong-product term</text>
+    <text x="560" y="386" text-anchor="middle" font-size="10" fill="#1e293b">may appear in the answer body</text>
+  </g>
+
+  <!-- Decision -->
+  <g>
+    <polygon points="780,200 880,160 980,200 880,240" fill="#fef3c7" stroke="#92400e" stroke-width="2.5"/>
+    <text x="880" y="205" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">all pass?</text>
+  </g>
+
+  <!-- Outcomes -->
+  <g>
+    <rect x="780" y="290" width="200" height="80" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+    <text x="880" y="318" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">publish answer</text>
+    <text x="880" y="340" text-anchor="middle" font-size="10" fill="#1e293b">answer_validation_passed</text>
+    <text x="880" y="356" text-anchor="middle" font-size="10" font-family="monospace" fill="#15803d">= True</text>
+  </g>
+
+  <g>
+    <rect x="780" y="400" width="200" height="80" rx="10" fill="#fef9c3" stroke="#a16207" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="880" y="428" text-anchor="middle" font-size="13" font-weight="bold" fill="#a16207">fall back</text>
+    <text x="880" y="448" text-anchor="middle" font-size="10" fill="#1e293b">deterministic renderer</text>
+    <text x="880" y="464" text-anchor="middle" font-size="10" font-family="monospace" fill="#a16207">always passes</text>
+  </g>
+
+  <!-- Arrows from packet to each rule -->
+  <path d="M 320 165 L 400 140" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M 320 285 L 400 250" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M 320 285 L 400 360" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Arrows from rules to decision -->
+  <path d="M 720 140 L 800 195" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M 720 250 L 800 205" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M 720 360 L 800 215" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Decision arrows -->
+  <path d="M 880 240 L 880 290" fill="none" stroke="#15803d" stroke-width="2.5" marker-end="url(#arrGreen)"/>
+  <text x="895" y="270" font-size="10" fill="#15803d" font-weight="bold">yes</text>
+  <path d="M 850 240 Q 850 320 850 400" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrRed)"/>
+  <text x="800" y="370" font-size="10" fill="#b91c1c" font-weight="bold">no</text>
+
+  <!-- Footer -->
+  <g transform="translate(40, 510)">
+    <rect x="0" y="0" width="920" height="80" rx="10" fill="#f0f9ff" stroke="#0369a1" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="460" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#0369a1">why this matters</text>
+    <text x="460" y="52" text-anchor="middle" font-size="11" fill="#1e293b">the validator turns the local decoder's text generation into a constrained-output problem.</text>
+    <text x="460" y="70" text-anchor="middle" font-size="11" fill="#1e293b">citation correctness is a property of the runtime, not of the model — swap the model, the rule holds.</text>
+  </g>
+</svg>

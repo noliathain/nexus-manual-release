@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" font-family="'Cascadia Code', 'JetBrains Mono', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#1e293b"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" fill="#fffef9"/>
+
+  <text x="600" y="40" text-anchor="middle" font-size="22" font-weight="bold" fill="#1e293b">Offline vs On-Device — What Runs Where</text>
+  <text x="600" y="62" text-anchor="middle" font-size="13" fill="#64748b" font-style="italic">the same static encoder runs on both sides; everything else can be heavier offline</text>
+
+  <!-- OFFLINE column (left) -->
+  <rect x="40" y="100" width="540" height="560" rx="14" fill="#f0f9ff" stroke="#0369a1" stroke-width="3" stroke-dasharray="8 4"/>
+  <text x="310" y="135" text-anchor="middle" font-size="18" font-weight="bold" fill="#0369a1">OFFLINE (build-time)</text>
+  <text x="310" y="158" text-anchor="middle" font-size="12" fill="#64748b" font-style="italic">a workstation — one-time, before deployment</text>
+
+  <!-- Offline boxes -->
+  <g>
+    <rect x="80" y="195" width="460" height="80" rx="10" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+    <text x="310" y="223" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">1. Author the product graph</text>
+    <text x="310" y="244" text-anchor="middle" font-size="11" fill="#1e293b">decompose source manuals into typed nodes + edges</text>
+    <text x="310" y="262" text-anchor="middle" font-size="10" fill="#64748b">nodes.jsonl, edges.jsonl, entities.jsonl</text>
+  </g>
+  <path d="M 310 275 L 310 305" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <g>
+    <rect x="80" y="305" width="460" height="80" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+    <text x="310" y="333" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">2. Build the semantic index</text>
+    <text x="310" y="354" text-anchor="middle" font-size="11" fill="#1e293b">encode every node text with the static encoder</text>
+    <text x="310" y="372" text-anchor="middle" font-size="10" fill="#64748b">semantic_index.npz — ~200 KB per product</text>
+  </g>
+  <path d="M 310 385 L 310 415" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <g>
+    <rect x="80" y="415" width="460" height="80" rx="10" fill="#fecaca" stroke="#b91c1c" stroke-width="2"/>
+    <text x="310" y="443" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">3. Author the safety gate</text>
+    <text x="310" y="464" text-anchor="middle" font-size="11" fill="#1e293b">pattern rules + thresholds; SHA-256 pinned</text>
+    <text x="310" y="482" text-anchor="middle" font-size="10" fill="#64748b">configs/safety_gate.yaml</text>
+  </g>
+  <path d="M 310 495 L 310 525" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <g>
+    <rect x="80" y="525" width="460" height="80" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="2"/>
+    <text x="310" y="553" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">4. Train the veto models</text>
+    <text x="310" y="574" text-anchor="middle" font-size="11" fill="#1e293b">small logistic-regression classifiers</text>
+    <text x="310" y="592" text-anchor="middle" font-size="10" fill="#64748b">safety_veto.json, wrong_entity_veto.json</text>
+  </g>
+
+  <!-- Arrow: offline → on-device -->
+  <g>
+    <path d="M 580 360 L 630 360" fill="none" stroke="#1e293b" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="605" y="345" text-anchor="middle" font-size="11" fill="#64748b" font-weight="bold">ship</text>
+  </g>
+
+  <!-- ON-DEVICE column (right) -->
+  <rect x="640" y="100" width="520" height="560" rx="14" fill="#fef9c3" stroke="#a16207" stroke-width="3" stroke-dasharray="8 4"/>
+  <text x="900" y="135" text-anchor="middle" font-size="18" font-weight="bold" fill="#a16207">ON-DEVICE (runtime)</text>
+  <text x="900" y="158" text-anchor="middle" font-size="12" fill="#64748b" font-style="italic">desktop or embedded — every query</text>
+
+  <!-- On-device boxes -->
+  <g>
+    <rect x="680" y="195" width="440" height="60" rx="10" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+    <text x="900" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">encode query (static encoder)</text>
+    <text x="900" y="240" text-anchor="middle" font-size="10" fill="#64748b">vocab lookup + token-vector averaging · sub-millisecond</text>
+  </g>
+  <path d="M 900 255 L 900 280" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <g>
+    <rect x="680" y="280" width="440" height="60" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+    <text x="900" y="305" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">retrieve (cosine vs pre-built index)</text>
+    <text x="900" y="325" text-anchor="middle" font-size="10" fill="#64748b">N × 256 dot product · sub-millisecond</text>
+  </g>
+  <path d="M 900 340 L 900 365" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <g>
+    <rect x="680" y="365" width="440" height="60" rx="10" fill="#fecaca" stroke="#b91c1c" stroke-width="2"/>
+    <text x="900" y="390" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">gate decision (pattern + veto)</text>
+    <text x="900" y="410" text-anchor="middle" font-size="10" fill="#64748b">deterministic checks + 2 logreg evals · sub-millisecond</text>
+  </g>
+  <path d="M 900 425 L 900 450" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <g>
+    <rect x="680" y="450" width="440" height="60" rx="10" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+    <text x="900" y="475" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">enrich packet (graph walk + backfill)</text>
+    <text x="900" y="495" text-anchor="middle" font-size="10" fill="#64748b">pure-Python edge traversal · sub-millisecond</text>
+  </g>
+  <path d="M 900 510 L 900 535" fill="none" stroke="#1e293b" stroke-width="2" marker-end="url(#arr)"/>
+
+  <g>
+    <rect x="680" y="535" width="440" height="90" rx="10" fill="#ede9fe" stroke="#5b21b6" stroke-width="2.5"/>
+    <text x="900" y="563" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b21b6">local decoder verbalizer</text>
+    <text x="900" y="585" text-anchor="middle" font-size="11" fill="#1e293b">small autoregressive model · greedy decoding</text>
+    <text x="900" y="605" text-anchor="middle" font-size="10" fill="#64748b">~95 MB FP32 · 3-4s CPU · &lt; 1s on GPU · &lt;500ms INT8</text>
+  </g>
+
+  <!-- Bottom callout: same encoder -->
+  <g transform="translate(40, 685)">
+    <text x="600" y="0" text-anchor="middle" font-size="13" fill="#64748b" font-style="italic">the static embedding encoder is the only component that ships in both columns —</text>
+    <text x="600" y="20" text-anchor="middle" font-size="13" fill="#64748b" font-style="italic">retrieval quality on the embedded build is identical to the desktop demo by construction</text>
+  </g>
+</svg>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 720" font-family="'Cascadia Code', 'JetBrains Mono', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#1e293b"/>
+    </marker>
+    <marker id="arrRed" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#b91c1c"/>
+    </marker>
+    <marker id="arrGreen" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#15803d"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="720" fill="#fffef9"/>
+
+  <text x="500" y="40" text-anchor="middle" font-size="22" font-weight="bold" fill="#1e293b">Safety Gate — Decision Layers</text>
+  <text x="500" y="62" text-anchor="middle" font-size="12" fill="#64748b" font-style="italic">six sequential checks; the decoder is invoked only if every check passes</text>
+
+  <!-- Query input -->
+  <rect x="420" y="90" width="160" height="50" rx="10" fill="#fef3c7" stroke="#92400e" stroke-width="2.5"/>
+  <text x="500" y="120" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Query</text>
+
+  <!-- Check 1: Prompt injection -->
+  <g>
+    <polygon points="500,170 700,170 660,220 540,220" fill="#fecaca" stroke="#b91c1c" stroke-width="2.5"/>
+    <text x="600" y="195" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">prompt injection?</text>
+    <text x="600" y="212" text-anchor="middle" font-size="10" fill="#64748b">regex pattern match</text>
+  </g>
+  <rect x="780" y="170" width="180" height="60" rx="10" fill="#fee2e2" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <text x="870" y="195" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">BLOCK</text>
+  <text x="870" y="215" text-anchor="middle" font-size="10" fill="#64748b">prompt_injection_detected</text>
+
+  <!-- Check 2: Unsupported repair -->
+  <g>
+    <polygon points="500,270 700,270 660,320 540,320" fill="#fecaca" stroke="#b91c1c" stroke-width="2.5"/>
+    <text x="600" y="295" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">unsupported repair?</text>
+    <text x="600" y="312" text-anchor="middle" font-size="10" fill="#64748b">bypass / disassemble / etc.</text>
+  </g>
+  <rect x="780" y="270" width="180" height="60" rx="10" fill="#fee2e2" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <text x="870" y="295" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">BLOCK</text>
+  <text x="870" y="315" text-anchor="middle" font-size="10" fill="#64748b">unsupported_repair_request</text>
+
+  <!-- Check 3: Wrong product -->
+  <g>
+    <polygon points="500,370 700,370 660,420 540,420" fill="#fecaca" stroke="#b91c1c" stroke-width="2.5"/>
+    <text x="600" y="395" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">wrong product?</text>
+    <text x="600" y="412" text-anchor="middle" font-size="10" fill="#64748b">topical mismatch with binding</text>
+  </g>
+  <rect x="780" y="370" width="180" height="60" rx="10" fill="#fee2e2" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <text x="870" y="395" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">BLOCK</text>
+  <text x="870" y="415" text-anchor="middle" font-size="10" fill="#64748b">wrong_product_query</text>
+
+  <!-- Check 4: OOD / low overlap -->
+  <g>
+    <polygon points="500,470 700,470 660,520 540,520" fill="#fecaca" stroke="#b91c1c" stroke-width="2.5"/>
+    <text x="600" y="495" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">overlap &lt; 0.15?</text>
+    <text x="600" y="512" text-anchor="middle" font-size="10" fill="#64748b">out of distribution</text>
+  </g>
+  <rect x="780" y="470" width="180" height="60" rx="10" fill="#fee2e2" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <text x="870" y="495" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">BLOCK</text>
+  <text x="870" y="515" text-anchor="middle" font-size="10" fill="#64748b">no_relevant_evidence</text>
+
+  <!-- Check 5: Safety veto (learned) -->
+  <g>
+    <polygon points="500,570 700,570 660,620 540,620" fill="#fecaca" stroke="#b91c1c" stroke-width="2.5"/>
+    <text x="600" y="595" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">safety veto ≥ 0.3?</text>
+    <text x="600" y="612" text-anchor="middle" font-size="10" fill="#64748b">learned logreg classifier</text>
+  </g>
+  <rect x="780" y="570" width="180" height="60" rx="10" fill="#fee2e2" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <text x="870" y="595" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">BLOCK</text>
+  <text x="870" y="615" text-anchor="middle" font-size="10" fill="#64748b">safety_veto / safety_fp_guard</text>
+
+  <!-- Final ALLOW box -->
+  <rect x="120" y="640" width="320" height="60" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2.5"/>
+  <text x="280" y="668" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">ALLOW</text>
+  <text x="280" y="688" text-anchor="middle" font-size="11" fill="#1e293b">retrieve, enrich, verbalize, validate, render</text>
+
+  <!-- Arrows -->
+  <path d="M 500 140 L 600 170" fill="none" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arr)"/>
+  <path d="M 700 195 L 780 195" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrRed)"/>
+  <path d="M 600 220 L 600 270" fill="none" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arr)"/>
+  <path d="M 700 295 L 780 295" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrRed)"/>
+  <path d="M 600 320 L 600 370" fill="none" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arr)"/>
+  <path d="M 700 395 L 780 395" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrRed)"/>
+  <path d="M 600 420 L 600 470" fill="none" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arr)"/>
+  <path d="M 700 495 L 780 495" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrRed)"/>
+  <path d="M 600 520 L 600 570" fill="none" stroke="#1e293b" stroke-width="2.5" marker-end="url(#arr)"/>
+  <path d="M 700 595 L 780 595" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrRed)"/>
+  <path d="M 540 620 Q 400 640 320 640" fill="none" stroke="#15803d" stroke-width="2.5" marker-end="url(#arrGreen)"/>
+
+  <!-- Side annotation: latency -->
+  <g transform="translate(40, 200)">
+    <rect x="0" y="0" width="180" height="380" rx="10" fill="#f0f9ff" stroke="#0369a1" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="90" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#0369a1">checks 1-4: regex / token</text>
+    <text x="90" y="45" text-anchor="middle" font-size="10" fill="#1e293b">deterministic. no model</text>
+    <text x="90" y="60" text-anchor="middle" font-size="10" fill="#1e293b">forward pass. config</text>
+    <text x="90" y="75" text-anchor="middle" font-size="10" fill="#1e293b">SHA-256 pinned.</text>
+    <text x="90" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#b91c1c">sub-millisecond</text>
+
+    <text x="90" y="180" text-anchor="middle" font-size="12" font-weight="bold" fill="#0369a1">check 5: learned veto</text>
+    <text x="90" y="200" text-anchor="middle" font-size="10" fill="#1e293b">small logreg classifier.</text>
+    <text x="90" y="215" text-anchor="middle" font-size="10" fill="#1e293b">weights ship as JSON.</text>
+    <text x="90" y="230" text-anchor="middle" font-size="10" fill="#1e293b">no transformer.</text>
+    <text x="90" y="250" text-anchor="middle" font-size="11" font-weight="bold" fill="#b91c1c">sub-millisecond</text>
+
+    <text x="90" y="320" text-anchor="middle" font-size="12" font-weight="bold" fill="#0369a1">decoder never invoked</text>
+    <text x="90" y="340" text-anchor="middle" font-size="10" fill="#1e293b">on any BLOCK path.</text>
+    <text x="90" y="355" text-anchor="middle" font-size="10" fill="#1e293b">verified by the test</text>
+    <text x="90" y="370" text-anchor="middle" font-size="10" fill="#1e293b">suite.</text>
+  </g>
+</svg>
