@@ -160,5 +160,5 @@ module that asserts every code path works with `HF_HUB_OFFLINE=1` set
 and the HuggingFace cache absent.
 
 ```bash
-HF_HUB_OFFLINE=1 pytest tests/test_offline_operation.py -v
+HF_HUB_OFFLINE=1 uv run pytest tests/test_offline_operation.py -v
 ```

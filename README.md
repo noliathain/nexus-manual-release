@@ -67,48 +67,66 @@ nexus-manual-release/
 
 ## Quick start
 
+> 🆕 **New to this?** See the [**Setup Guide**](docs/setup_guide.md)
+> for a step-by-step walkthrough that assumes no prior Python experience.
+> Total time: about 10 minutes.
+>
+> Hit a problem? See the [**Troubleshooting Guide**](docs/troubleshooting.md).
+
 ### Requirements
 
-- Python 3.10 or newer
-- Linux or macOS
-- ~2 GB RAM during inference; ~125 MB on disk for this repository
-- **No network access required** — every model and every index is
-  bundled in the repository
+- **macOS or Linux** (Windows works too — see the [Setup Guide](docs/setup_guide.md#on-windows))
+- **An internet connection** for the initial install (the demo itself runs
+  fully offline)
+- **~2 GB of free disk space**
+- **No Python installation required** — `uv` handles Python for you
 
-### Install
+### Three commands to run the demo
+
+#### 1. Install `uv` (one-time setup)
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then **open a fresh terminal window** so the `uv` command is available.
+
+#### 2. Download and install
 
 ```bash
 git clone https://github.com/noliathain/nexus-manual-release.git
 cd nexus-manual-release
-pip install -e .
+uv sync
 ```
 
-### Run the demo
+The `uv sync` step takes 2-5 minutes — it downloads Python (if needed),
+creates a virtual environment, and installs every dependency from the
+locked `uv.lock` file.
+
+#### 3. Run the demo
 
 ```bash
-HF_HUB_OFFLINE=1 nexus-manual demo-chat \
+HF_HUB_OFFLINE=1 uv run nexus-manual demo-chat \
     --product electrolux_washer_dryer \
     --renderer nexus \
     --retrieval semantic
 ```
 
-Then type questions at the prompt. The full demo question sequence used in
-the recording is in [docs/demo_script.md](docs/demo_script.md).
+Type questions at the prompt. The full demo question sequence used in the
+recording is in [docs/demo_script.md](docs/demo_script.md).
 
-### Pre-warm (optional, ~10 seconds)
+### Other commands
 
-Pre-loads the local decoder so the first answer in a live demo is at
-steady-state latency (~3 seconds) instead of cold-load latency (~10
-seconds). The semantic indexes are already bundled and load instantly.
+**Pre-warm** (optional, makes the first answer fast):
 
 ```bash
-nexus-manual prewarm
+uv run nexus-manual prewarm
 ```
 
-### Single-shot question
+**Single-shot question** with full audit trail:
 
 ```bash
-nexus-manual ask \
+uv run nexus-manual ask \
     --product electrolux_steam_oven \
     --renderer nexus \
     --retrieval semantic \
@@ -116,10 +134,10 @@ nexus-manual ask \
     "How do I clean the cavity?"
 ```
 
-### Machine output
+**Machine-readable JSON output**:
 
 ```bash
-nexus-manual ask \
+uv run nexus-manual ask \
     --product electrolux_steam_oven \
     --renderer nexus \
     --retrieval semantic \
@@ -129,6 +147,14 @@ nexus-manual ask \
 
 Emits a single JSON object with the answer, citations, packet hash, and
 full telemetry trace.
+
+**Run the test suite** (verify everything works on your machine):
+
+```bash
+HF_HUB_OFFLINE=1 uv run pytest tests/ -v
+```
+
+Expected output: **53 passed**.
 
 ## Design principles
 
@@ -172,6 +198,15 @@ hash will produce byte-identical answers. The trace is the proof.
 
 ## Documentation
 
+### For first-time users
+
+- **[Setup Guide](docs/setup_guide.md)** — zero-to-demo in 10 minutes,
+  no prior Python experience required
+- **[Troubleshooting Guide](docs/troubleshooting.md)** — common errors
+  and fixes
+
+### For evaluators and engineers
+
 - **[Architecture](docs/architecture.md)** — component map, invariants,
   performance characteristics
 - **[Inference pipeline](docs/pipeline.md)** — end-to-end pipeline with
@@ -188,9 +223,10 @@ integrity, offline operation, every refusal class, and the exact answer
 text reproduced from the demo recording.
 
 ```bash
-pip install pytest
-HF_HUB_OFFLINE=1 pytest tests/
+HF_HUB_OFFLINE=1 uv run pytest tests/ -v
 ```
+
+Expected output: **53 passed**.
 
 53 tests cover:
 

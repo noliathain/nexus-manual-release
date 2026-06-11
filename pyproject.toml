@@ -42,6 +42,22 @@ nexus-manual = "nexus_manual_release.cli:main"
 Homepage = "https://github.com/noliathain/nexus-manual-release"
 Repository = "https://github.com/noliathain/nexus-manual-release.git"
 
+[tool.uv]
+# Pin a Python version uv will install automatically if the
+# system doesn't have it. This is the property that lets a
+# non-technical user run `uv sync` on a clean machine and have
+# Python + every dependency installed in one step.
+required-version = ">=0.4"
+
+[tool.uv.workspace]
+# Single-package workspace.
+members = []
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/nexus_manual_release"]
 

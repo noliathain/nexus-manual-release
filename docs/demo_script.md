@@ -8,7 +8,7 @@ in the trace at each step.
 In a separate terminal, off-camera:
 
 ```bash
-nexus-manual prewarm
+uv run nexus-manual prewarm
 ```
 
 This pre-loads the local decoder and builds the per-product semantic indexes
@@ -18,7 +18,7 @@ instead of cold-load latency (~10 seconds).
 In a fresh terminal, on-camera:
 
 ```bash
-HF_HUB_OFFLINE=1 nexus-manual demo-chat \
+HF_HUB_OFFLINE=1 uv run nexus-manual demo-chat \
     --product electrolux_washer_dryer \
     --renderer nexus --retrieval semantic
 ```
