@@ -25,7 +25,8 @@ nexus-manual-release/
 │   └── safety/                      # learned safety + wrong-entity weights
 ├── models/
 │   ├── local_decoder.pt             # the small local decoder checkpoint
-│   └── tokenizer/                   # tokenizer files
+│   ├── tokenizer/                   # decoder tokenizer files
+│   └── encoder/                     # bundled static embedding encoder
 ├── configs/
 │   └── safety_gate.yaml             # frozen safety-gate config
 ├── docs/                            # architecture and pipeline documentation
@@ -66,7 +67,9 @@ validated against the assembled packet before display.
 
 - Python 3.10 or newer
 - Linux or macOS
-- ~2 GB RAM during inference; ~150 MB on disk for this repository
+- ~2 GB RAM during inference; ~125 MB on disk for this repository
+- **No network access required** — every model and every index is
+  bundled in the repository
 
 ### Install
 
@@ -76,10 +79,11 @@ cd nexus-manual-release
 pip install -e .
 ```
 
-### Pre-warm (one-time, ~30 seconds)
+### Pre-warm (optional, ~10 seconds)
 
-Pre-loads the local decoder, downloads the static embedding encoder into the
-local cache, and builds the per-product semantic indexes.
+Pre-loads the local decoder so the first answer in a live demo is at
+steady-state latency (~3 seconds) instead of cold-load latency (~10 seconds).
+The semantic indexes are already bundled and load instantly.
 
 ```bash
 nexus-manual prewarm
@@ -186,10 +190,14 @@ refusal reason. The decoder is never invoked on a refusal.
 | variable | purpose |
 |---|---|
 | `NEXUS_MANUAL_DECODER_PATH` | override path to the local decoder checkpoint |
-| `NEXUS_MANUAL_TOKENIZER_PATH` | override path to the tokenizer directory |
+| `NEXUS_MANUAL_TOKENIZER_PATH` | override path to the decoder tokenizer directory |
+| `NEXUS_MANUAL_ENCODER_PATH` | override path to the static embedding encoder |
 | `NEXUS_MANUAL_DEVICE` | `cpu` (default) or `cuda` |
-| `HF_HUB_OFFLINE=1` | force the static encoder to load from local cache only |
-| `HF_HUB_DISABLE_PROGRESS_BARS=1` | suppress download progress bars |
+| `HF_HUB_OFFLINE=1` | guarantees no network calls (defaults still work without it once installed) |
+| `HF_HUB_DISABLE_PROGRESS_BARS=1` | suppress any progress bars if a user-provided encoder is loaded from HF |
+
+The defaults resolve to bundled assets under `models/` and `artifacts/`. None
+of the env vars are required to run the demo.
 
 ## License
 

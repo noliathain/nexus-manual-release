@@ -52,10 +52,32 @@ for _logger in ("huggingface_hub", "model2vec",
     except Exception:
         pass
 
-# Default Model2Vec encoder. Same model used for the offline
-# node index and for the on-device query encode, so retrieval
-# behavior matches between desktop and the embedded target.
-DEFAULT_ENCODER = "minishlab/potion-base-8M"
+# Static embedding encoder — same model is used to build the
+# offline index AND to encode queries on-device, so retrieval
+# quality on the embedded target matches the desktop demo.
+#
+# Loading priority:
+#   1. NEXUS_MANUAL_ENCODER_PATH env var (any local path)
+#   2. <repo>/models/encoder/ if present (bundled with this release)
+#   3. HuggingFace Hub id (only if neither is present — requires
+#      network on first call)
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+_BUNDLED_ENCODER_DIR = _REPO_ROOT / "models" / "encoder"
+_HUB_ENCODER_ID = "minishlab/potion-base-8M"
+
+
+def _resolve_default_encoder() -> str:
+    """Pick the encoder source: env var > bundled dir > HF Hub id."""
+    env = os.environ.get("NEXUS_MANUAL_ENCODER_PATH")
+    if env and Path(env).exists():
+        return env
+    if _BUNDLED_ENCODER_DIR.is_dir() and \
+            (_BUNDLED_ENCODER_DIR / "model.safetensors").is_file():
+        return str(_BUNDLED_ENCODER_DIR)
+    return _HUB_ENCODER_ID
+
+
+DEFAULT_ENCODER = _resolve_default_encoder()
 INDEX_VERSION = 1
 
 
@@ -75,8 +97,12 @@ def _normalize(v):
 
 def _index_cache_path(product_dir: Path,
                               encoder_name: str) -> Path:
-    safe = encoder_name.replace("/", "_")
-    return product_dir / f"semantic_index_{safe}.npz"
+    # Phase 32O: stable filename per release so the bundled
+    # index files have a clean name regardless of whether the
+    # encoder was loaded from a local path, an env var, or the
+    # HuggingFace Hub. The index version field guards against
+    # accidental cross-encoder reuse.
+    return product_dir / "semantic_index.npz"
 
 
 def _model_cache():

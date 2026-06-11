@@ -6,6 +6,11 @@ on-device side is small enough to run on embedded hardware; the offline side
 can use a much larger embedding model because none of it travels to the
 device.
 
+**This release is fully self-contained.** Every model, every index, and every
+config needed to reproduce the demo ships in the repository. A clean machine
+with no internet access can clone, install, and run the demo without any
+external service call.
+
 ## Build-time vs runtime split
 
 ```mermaid

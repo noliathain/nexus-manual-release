@@ -10,8 +10,11 @@ dist/
 .mypy_cache/
 .ruff_cache/
 
-# Per-product semantic index cache (rebuilt by `prewarm`)
-artifacts/products/*/graph/semantic_index_*.npz
+# The semantic index files (semantic_index.npz) ARE committed
+# — they ship pre-built so the repo runs offline out of the
+# box. Only the legacy encoder-named cache files are ignored.
+artifacts/products/*/graph/semantic_index_minishlab*.npz
+artifacts/products/*/graph/semantic_index_potion*.npz
 
 # Editor / IDE
 .vscode/
