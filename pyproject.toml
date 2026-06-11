@@ -1,0 +1,62 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nexus-manual-release"
+version = "1.0.0"
+description = "Safety-gated, citation-grounded inference for product-manual QA. Runs locally."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Niall Lyons" }]
+keywords = ["graph-rag", "retrieval-augmented-generation",
+            "safety", "manuals", "on-device-llm"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    # Inference runtime
+    "torch>=2.0.0",
+    "transformers>=4.41.0",
+    "numpy>=1.24.0",
+    "model2vec>=0.8.0",
+    # CLI + presentation
+    "typer>=0.12.0",
+    "rich>=13.7.0",
+    "pyyaml>=6.0.0",
+]
+
+[project.scripts]
+nexus-manual = "nexus_manual_release.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/noliathain/nexus-manual-release"
+Repository = "https://github.com/noliathain/nexus-manual-release.git"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nexus_manual_release"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/",
+    "artifacts/",
+    "models/",
+    "configs/",
+    "docs/",
+    "README.md",
+    "LICENSE",
+]
+exclude = [
+    "tests/",
+    "*.pyc",
+    "__pycache__",
+]

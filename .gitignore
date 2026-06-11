@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Per-product semantic index cache (rebuilt by `prewarm`)
+artifacts/products/*/graph/semantic_index_*.npz
+
+# Editor / IDE
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Logs / temp
+*.log
+.env

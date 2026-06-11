@@ -1,0 +1,11 @@
+gate_name: gate_v23c_proven_overlay_baseline_first_guardrail
+deterministic_first: true
+baseline_we_threshold: 0.85
+overlay_we_threshold: 0.45
+new_candidate_we_threshold: 0.35
+micro_veto_mode: on
+review_keeps_baseline_modes: [existing_baseline, proven_overlay]
+review_abstains_modes: [new_candidate]
+model_cannot_override_safety: true
+model_cannot_call_decoder_on_refusal: true
+model_cannot_use_filtered_subset: true
